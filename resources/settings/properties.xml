@@ -1,0 +1,5 @@
+<properties>
+    <property id="DefaultTag" type="string">INT. REPS</property>
+    <property id="RepsValueFormat" type="string">x$1$</property>
+    <property id="FieldReset" type="boolean">false</property>
+</properties>

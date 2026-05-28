@@ -1,0 +1,13 @@
+<settings>
+    <setting propertyKey="@Properties.DefaultTag" title="@Strings.DefaultTagName">
+        <settingConfig type="alphaNumeric" required="true" maxLength="10"/>
+    </setting>
+    <group id="advancedSettings" title="@Strings.AdvancedSettingsName">
+        <setting propertyKey="@Properties.RepsValueFormat" title="@Strings.RepsValueFormatName">
+            <settingConfig type="alphaNumeric" required="true" maxLength="10"/>
+        </setting>
+        <setting propertyKey="@Properties.FieldReset" title="@Strings.FieldResetName">
+            <settingConfig type="boolean"/>
+        </setting>
+    </group>
+</settings>

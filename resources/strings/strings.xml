@@ -1,8 +1,8 @@
 <strings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://developer.garmin.com/downloads/connect-iq/resources.xsd">
     <string id="AppName">IntervalReps</string>
     <string id="DefaultTagName">Data field label</string>
-    <string id="RepsValueFormatName">Reps counter string format</string>
+    <string id="RepsValueFormatName">Counter value format (1-reps, 2-interval)</string>
     <string id="FieldResetName">Reset counter by timer reactivation during the rest period</string>
-    <string id="HeuristicModeName">Heuristic mode for drills fix (experimental) </string>
+    <string id="HeuristicModeName">Heuristic mode for drills count fix (experimental) </string>
     <string id="AdvancedSettingsName">Advanced settings</string>
 </strings>

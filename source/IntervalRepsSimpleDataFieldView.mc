@@ -25,10 +25,14 @@ class IntervalRepsSimpleDataFieldView extends WatchUi.SimpleDataField {
         if (info.elapsedDistance != null && info.elapsedDistance > currentTotalDistance) {
             return info.elapsedDistance.toNumber() - currentTotalDistance;
         }
-        if (repeatCounter > 1 && (System.getClockTime().sec % 3 == 0)) {
-            return format(Properties.getValue("RepsValueFormat"), [repeatCounter, lastIntervalDistance]);
+        if (repeatCounter > 1) {
+            var frmt = Properties.getValue("RepsValueFormat");
+            if (System.getClockTime().sec % 3 == 0) {
+                return format(frmt, [repeatCounter, lastIntervalDistance]);
+            }
+            return frmt.find("$1$") == null ? repeatCounter : lastIntervalDistance;
         }
-        return lastIntervalDistance;
+        return lastIntervalDistance; 
     }
 
     function onTimerLap() as Void {

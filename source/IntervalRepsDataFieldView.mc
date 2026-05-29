@@ -27,10 +27,7 @@ class IntervalRepsDataFieldView extends WatchUi.SimpleDataField {
         // See Activity.Info in the documentation for available information.
         if (isWorkoutStarted) {
             if ((workoutStepCounter / 2).toNumber() & 1) {
-                if (repeatCounter > 1 && (System.getClockTime().sec % 3 == 0)) {
-                    return format(Properties.getValue("RepsValueFormat"), [repeatCounter, lastIntervalDistance]);
-                }
-                return lastIntervalDistance;
+                return getCounterValue();
             }
             return (info.elapsedDistance != null ? info.elapsedDistance : 0).toNumber() - currentTotalDistance;
         }
@@ -39,8 +36,16 @@ class IntervalRepsDataFieldView extends WatchUi.SimpleDataField {
         } else {
             return (info.elapsedDistance != null ? info.elapsedDistance : 0).toNumber() - currentTotalDistance;
         }
-        if (repeatCounter > 1 && (System.getClockTime().sec % 3 == 0)) {
-            return format(Properties.getValue("RepsValueFormat"), [repeatCounter, lastIntervalDistance]);
+        return getCounterValue();
+    }
+
+    function getCounterValue() as Numeric or String {
+        if (repeatCounter > 1) {
+            var frmt = Properties.getValue("RepsValueFormat");
+            if (System.getClockTime().sec % 3 == 0) {
+                return format(Properties.getValue("RepsValueFormat"), [repeatCounter, lastIntervalDistance]);
+            }
+            return frmt.find("$1$") == null ? repeatCounter : lastIntervalDistance;
         }
         return lastIntervalDistance;
     }

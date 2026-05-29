@@ -4,14 +4,11 @@ import Toybox.Lang;
 import Toybox.Time;
 import Toybox.WatchUi;
 
-class IntervalRepsDataFieldView extends WatchUi.SimpleDataField {
+class IntervalRepsSimpleDataFieldView extends WatchUi.SimpleDataField {
 
     hidden var currentTotalDistance = 0;
     hidden var lastIntervalDistance = 0;
     hidden var repeatCounter = 0;
-    hidden var lapCounter = 0;
-    hidden var isWorkoutStarted = false;
-    hidden var workoutStepCounter = 0;
 
     // Set the label of the data field here.
     function initialize() {
@@ -25,19 +22,8 @@ class IntervalRepsDataFieldView extends WatchUi.SimpleDataField {
     // guarantee that compute() will be called before onUpdate().
     function compute(info as Activity.Info) as Numeric or Duration or String or Null {
         // See Activity.Info in the documentation for available information.
-        if (isWorkoutStarted) {
-            if ((workoutStepCounter / 2).toNumber() & 1) {
-                if (repeatCounter > 1 && (System.getClockTime().sec % 3 == 0)) {
-                    return format(Properties.getValue("RepsValueFormat"), [repeatCounter, lastIntervalDistance]);
-                }
-                return lastIntervalDistance;
-            }
-            return (info.elapsedDistance != null ? info.elapsedDistance : 0).toNumber() - currentTotalDistance;
-        }
-        if (lapCounter & 1) {
-            updateRepeatCounter();
-        } else {
-            return (info.elapsedDistance != null ? info.elapsedDistance : 0).toNumber() - currentTotalDistance;
+        if (info.elapsedDistance != null && info.elapsedDistance > currentTotalDistance) {
+            return info.elapsedDistance.toNumber() - currentTotalDistance;
         }
         if (repeatCounter > 1 && (System.getClockTime().sec % 3 == 0)) {
             return format(Properties.getValue("RepsValueFormat"), [repeatCounter, lastIntervalDistance]);
@@ -47,26 +33,17 @@ class IntervalRepsDataFieldView extends WatchUi.SimpleDataField {
 
     function onTimerLap() as Void {
         if (Activity.getActivityInfo().timerState == Activity.TIMER_STATE_ON) {
-            isWorkoutStarted = false;
-            lapCounter += 1;
             updateRepeatCounter();
         }
     }
 
     function onTimerStop() as Void {
         if (Properties.getValue("FieldReset")) {
-            if (!isWorkoutStarted) {
-                lapCounter = 1;
-            }
+            repeatCounter = 0;
         }
     }
 
-    function onWorkoutStarted() as Void {
-        isWorkoutStarted = true;
-    }
-
     function onWorkoutStepComplete() as Void {
-        workoutStepCounter += 1;
         updateRepeatCounter();
     }
 

@@ -9,5 +9,8 @@
         <setting propertyKey="@Properties.FieldReset" title="@Strings.FieldResetName">
             <settingConfig type="boolean"/>
         </setting>
+        <setting propertyKey="@Properties.HeuristicMode" title="@Strings.HeuristicModeName">
+            <settingConfig type="boolean"/>
+        </setting>
     </group>
 </settings>

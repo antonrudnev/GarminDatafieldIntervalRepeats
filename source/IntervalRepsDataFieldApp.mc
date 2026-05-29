@@ -18,7 +18,10 @@ class IntervalRepsDataFieldApp extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as [Views] or [Views, InputDelegates] {
-        return [ new IntervalRepsDataFieldView() ];
+        if (Properties.getValue("HeuristicMode")) {
+            return [ new IntervalRepsDataFieldView() ];    
+        }
+        return [ new IntervalRepsSimpleDataFieldView() ];
     }
 
 }

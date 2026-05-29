@@ -2,6 +2,7 @@
     <string id="AppName">IntervalReps</string>
     <string id="DefaultTagName">Data field label</string>
     <string id="RepsValueFormatName">Reps counter string format</string>
-    <string id="FieldResetName">Reactivate timer while rest to reset the field</string>
+    <string id="FieldResetName">Reset the field by timer reactivation during rest</string>
+    <string id="HeuristicModeName">Heuristic mode (drills count fix)</string>
     <string id="AdvancedSettingsName">Advanced settings</string>
 </strings>

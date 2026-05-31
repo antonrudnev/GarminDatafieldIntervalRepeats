@@ -3,6 +3,6 @@
     <string id="DefaultTagName">Data field label</string>
     <string id="RepsValueFormatName">Counter value format (1-reps, 2-interval)</string>
     <string id="FieldResetName">Reset counter by timer reactivation during the rest period</string>
-    <string id="HeuristicModeName">Heuristic mode for drills count fix (experimental) </string>
+    <string id="UpdateLimitName">Time limit for drill distance update in seconds</string>
     <string id="AdvancedSettingsName">Advanced settings</string>
 </strings>

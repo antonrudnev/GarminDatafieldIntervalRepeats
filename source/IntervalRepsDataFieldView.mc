@@ -9,9 +9,7 @@ class IntervalRepsDataFieldView extends WatchUi.SimpleDataField {
     hidden var currentTotalDistance = 0;
     hidden var lastIntervalDistance = 0;
     hidden var repeatCounter = 0;
-    hidden var lapCounter = 0;
-    hidden var isWorkoutStarted = false;
-    hidden var workoutStepCounter = 0;
+    hidden var updateCounter = 0;
 
     // Set the label of the data field here.
     function initialize() {
@@ -25,66 +23,51 @@ class IntervalRepsDataFieldView extends WatchUi.SimpleDataField {
     // guarantee that compute() will be called before onUpdate().
     function compute(info as Activity.Info) as Numeric or Duration or String or Null {
         // See Activity.Info in the documentation for available information.
-        if (isWorkoutStarted) {
-            if ((workoutStepCounter / 2).toNumber() & 1) {
-                return getCounterValue();
-            }
-            return (info.elapsedDistance != null ? info.elapsedDistance : 0).toNumber() - currentTotalDistance;
-        }
-        if (lapCounter & 1) {
+        if (updateCounter < Properties.getValue("UpdateLimit")) {
             updateRepeatCounter();
-        } else {
-            return (info.elapsedDistance != null ? info.elapsedDistance : 0).toNumber() - currentTotalDistance;
+            updateCounter += 1;
         }
-        return getCounterValue();
-    }
-
-    function getCounterValue() as Numeric or String {
+        if (info.elapsedDistance != null && info.elapsedDistance > currentTotalDistance) {
+            return info.elapsedDistance.toNumber() - currentTotalDistance;
+        }
         if (repeatCounter > 1) {
             var frmt = Properties.getValue("RepsValueFormat");
             if (System.getClockTime().sec % 3 == 0) {
-                return format(Properties.getValue("RepsValueFormat"), [repeatCounter, lastIntervalDistance]);
+                return format(frmt, [repeatCounter, lastIntervalDistance]);
             }
             return frmt.find("$1$") == null ? repeatCounter : lastIntervalDistance;
         }
-        return lastIntervalDistance;
+        return lastIntervalDistance; 
     }
 
     function onTimerLap() as Void {
-        if (Activity.getActivityInfo().timerState == Activity.TIMER_STATE_ON) {
-            isWorkoutStarted = false;
-            lapCounter += 1;
-            updateRepeatCounter();
-        }
+        updateRepeatCounter();
+        updateCounter = 0;
     }
 
     function onTimerStop() as Void {
         if (Properties.getValue("FieldReset")) {
-            if (!isWorkoutStarted) {
-                lapCounter = 1;
-            }
+            repeatCounter = 0;
         }
     }
 
-    function onWorkoutStarted() as Void {
-        isWorkoutStarted = true;
-    }
-
     function onWorkoutStepComplete() as Void {
-        workoutStepCounter += 1;
         updateRepeatCounter();
     }
 
     function updateRepeatCounter() as Void {
-        var elapsedDistance = Activity.getActivityInfo().elapsedDistance.toNumber();
-        if (elapsedDistance > currentTotalDistance) {
-            if (lastIntervalDistance != elapsedDistance - currentTotalDistance) {
-                lastIntervalDistance = elapsedDistance - currentTotalDistance;
-                repeatCounter = 1;
-            } else {
-                repeatCounter += 1;
+        var info = Activity.getActivityInfo();
+        if (info.elapsedDistance != null) {
+            var elapsedDistance = info.elapsedDistance.toNumber();
+            if (elapsedDistance > currentTotalDistance) {
+                if (lastIntervalDistance != elapsedDistance - currentTotalDistance) {
+                    lastIntervalDistance = elapsedDistance - currentTotalDistance;
+                    repeatCounter = 1;
+                } else {
+                    repeatCounter += 1;
+                }
+                currentTotalDistance = elapsedDistance;
             }
-            currentTotalDistance = elapsedDistance;
         }
     }
 

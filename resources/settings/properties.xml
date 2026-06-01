@@ -1,6 +1,6 @@
 <properties>
     <property id="DefaultTag" type="string">INT. REPS</property>
-    <property id="RepsValueFormat" type="string">x$2$</property>
+    <property id="RepsValueFormat" type="string">× $2$</property>
     <property id="FieldReset" type="boolean">true</property>
     <property id="UpdateLimit" type="number">5</property>
 </properties>

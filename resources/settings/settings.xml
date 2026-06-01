@@ -10,7 +10,7 @@
             <settingConfig type="boolean"/>
         </setting>
         <setting propertyKey="@Properties.UpdateLimit" title="@Strings.UpdateLimitName">
-            <settingConfig type="numeric" min="0" max="5"/>
+            <settingConfig type="numeric" min="0" max="10"/>
         </setting>
     </group>
 </settings>
